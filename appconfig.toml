@@ -1,0 +1,14 @@
+[DASH_APP]
+APP_TITLE = "MTA DASH"
+HEAD_TITLE = "taruma-mtadash | MTA DASH"
+UPDATE_TITLE = "Updating..."
+DEBUG = false
+ALIAS = "taruma-mtadash"
+
+[TEMPLATE]
+WATERMARK_SOURCE = ""
+THEME = "MATERIA"
+
+VERSION = "v1.2.0"
+GITHUB_LINK = "https://github.com/taruma/anfrek"
+GITHUB_REPO = "taruma/anfrek"
