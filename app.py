@@ -28,9 +28,9 @@ app.layout = html.Div(
     [Input(component_id="input-text", component_property="value")],
 )
 def update_output_div(input_value):
-    return f"You've entered: {input_value} and {appconfig.DASH_APP.APP_TITLE}"
+    return f"You've entered: {input_value} and {appconfig.dash.title}"
 
 
 # Run the app
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=appconfig.dash.debug)
