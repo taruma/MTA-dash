@@ -10,7 +10,13 @@ def dict_to_namespace(d):
             d[key] = dict_to_namespace(value)
     return SimpleNamespace(**d)
 
-with open('config.toml', 'rb') as f:
+_CONFIG_PATH = 'appconfig.toml'
+
+with open(_CONFIG_PATH, 'rb') as f:
     config_dict = tomllib.load(f)
 
 appconfig = dict_to_namespace(config_dict)
+
+# temporary override for development
+# appconfig.dash.debug = True
+# appconfig.dash.title = "Hello Dash XXXX"

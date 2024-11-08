@@ -1,14 +1,14 @@
-[DASH_APP]
-APP_TITLE = "MTA DASH"
-HEAD_TITLE = "taruma-mtadash | MTA DASH"
-UPDATE_TITLE = "Updating..."
-DEBUG = false
-ALIAS = "taruma-mtadash"
+[dash]
+title = "Metrik Metro App"
+page_title = "taruma-mtadash | MTA DASH"
+loading_text = "Updating..."
+debug = true
+alias = "taruma-mtadash"
 
-[TEMPLATE]
-WATERMARK_SOURCE = ""
-THEME = "MATERIA"
+[template]
+watermark_source = ""
+theme = "MATERIA"
 
-VERSION = "v1.2.0"
-GITHUB_LINK = "https://github.com/taruma/anfrek"
-GITHUB_REPO = "taruma/anfrek"
+[repository]
+github_url = "https://github.com/taruma/mtadash"
+github_repo = "taruma/mtadash"
