@@ -18,5 +18,7 @@ with open(_CONFIG_PATH, 'rb') as f:
 appconfig = dict_to_namespace(config_dict)
 
 # temporary override for development
-# appconfig.dash.debug = True
+
+appconfig.dash.debug = True
 # appconfig.dash.title = "Hello Dash XXXX"
+appconfig.template.theme = 'JOURNAL'
