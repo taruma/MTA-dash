@@ -1,0 +1,21 @@
+.footer-center, .footer-right {
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    height: 3.875rem;
+    margin-right: 1rem;
+}
+
+.footer-center {
+    left:0;
+    margin-right: 0;
+}
+
+.footer-center a, .footer-right a {
+    text-decoration: none;
+    color: rgb(134, 142, 150);
+}
+
+.footer-center a:hover {
+    text-decoration: underline;
+}
