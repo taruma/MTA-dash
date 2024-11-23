@@ -1,13 +1,12 @@
 [dash]
-title = "Metrik Metro App"
+title = "MTA Dash App"
 page_title = "taruma-mtadash | MTA DASH"
-loading_text = "Updating..."
+loading_message = "Updating..."
 debug = true
 alias = "taruma-mtadash"
 
 [template]
-watermark_source = ""
-theme = "MATERIA"
+theme = "FLATLY"
 
 [repository]
 github_url = "https://github.com/taruma/mtadash"
