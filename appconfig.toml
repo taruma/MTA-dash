@@ -1,6 +1,7 @@
 [dash]
-title = "MTA Dash App"
-page_title = "taruma-mtadash | MTA DASH"
+title = "MTA Ridership Explorer: Trends and Post-Pandemic Recovery"
+subtitle = "An interactive dashboard to explore MTA ridership trends and post-pandemic recovery"
+page_title = "MTA Ridership Explorer by taruma"
 loading_message = "Updating..."
 debug = true
 alias = "taruma-mtadash"
