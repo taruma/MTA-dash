@@ -19,4 +19,5 @@ appconfig = dict_to_namespace(config_dict)
 
 # temporary override for development
 
-appconfig.dash.debug = True
+# appconfig.dash.debug = True
+# appconfig.template.theme = "SKETCHY"
