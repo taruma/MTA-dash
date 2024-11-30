@@ -3,12 +3,14 @@
 import dash
 from dash import Output, Input, State, dcc, _dash_renderer
 from appconfig import appconfig
+import plotly.graph_objects as go
 import dash_mantine_components as dmc
 import dash_bootstrap_components as dbc
 import pyfigure
 import pylayout
 import pyfunc
-import plotly.graph_objects as go
+import pylayoutfunc
+
 _dash_renderer._set_react_version("18.2.0")
 
 # Dash app configuration
@@ -48,18 +50,19 @@ app.layout = pylayout.appshell_layout
 # CALLBACKS
 
 
-# Define callback to update the output text
 @app.callback(
     Output(component_id="plot-mta-ridership-recovery", component_property="figure"),
+    Output("div-cards-total-ridership", "children"),
     [
-        Input(component_id="radiogroup-resample", component_property="value"),
-        Input(component_id="date-picker-start", component_property="value"),
-        Input(component_id="date-picker-end", component_property="value"),
-        Input(component_id="multi-select-transportation", component_property="value"),
+        Input("radiogroup-resample", "value"),
+        Input("date-picker-start", "value"),
+        Input("date-picker-end", "value"),
+        Input("multi-select-transportation", "value"),
     ],
 )
 def update_output_div(resample_period, date_start, date_end, transportation_modes):
-    return pyfigure.generate_ridership_recovery(
+
+    figure = pyfigure.generate_ridership_recovery(
         mta_daily_ridership,
         mta_daily_recovery,
         resample_period,
@@ -67,6 +70,16 @@ def update_output_div(resample_period, date_start, date_end, transportation_mode
         date_end,
         transportation_modes,
     )
+
+    cards = pylayoutfunc.generate_layout_card_total_ridership(
+        mta_daily_ridership,
+        resample_period,
+        date_start,
+        date_end,
+        transportation_modes,
+    )
+
+    return figure, cards
 
 
 @app.callback(
@@ -98,7 +111,7 @@ def update_insight(
         llm_api_key=llm_api_key,
         start_date=start_date,
         end_date=end_date,
-        resample_period=resample_period
+        resample_period=resample_period,
     )
 
     return dcc.Markdown(insight)

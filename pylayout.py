@@ -1,12 +1,12 @@
 """Layout Module for Dash App"""
 
+from datetime import date
+from dash import dcc, html
+from dash_iconify import DashIconify
 import dash_mantine_components as dmc
-from dash import dcc
 from appconfig import appconfig, projectconfig
 import pyfigure
-from datetime import date
 import pyfunc
-from dash_iconify import DashIconify
 
 # APPCONFIG
 main_title_text = appconfig.dash.title
@@ -20,19 +20,26 @@ main_subtitle = dmc.Center(
     dmc.Text(main_subtitle_text, c="dimmed", style={"fontSize": "1.2rem"})
 )
 
+# LINKS
+
+github_link = dmc.Anchor(
+    DashIconify(icon="mdi:github", width=25),
+    href=appconfig.repository.github_url,
+    target="_blank",
+)
+
+version_app = dmc.Badge(
+    f"{projectconfig.project.version}",
+    # variant="dot",
+    size="md",
+)
+
 # SHORT DESCRIPTION
 
 DESRIPTION = pyfunc.read_text_file("text/app_description.md")
 
 short_description = dmc.Center(
-    dmc.Paper(
-        dcc.Markdown(DESRIPTION),
-        shadow="lg",
-        mt="md",
-        w="80%",
-        pt="md",
-        px="lg",
-    )
+    dmc.Paper(dcc.Markdown(DESRIPTION), shadow="lg", mt="md", w="80%", pt="md", px="lg")
 )
 
 # PLOT-1
@@ -145,17 +152,8 @@ loading_plot1_insight = dcc.Loading(
     type="default",
 )
 
-github_link = dmc.Anchor(
-    DashIconify(icon="mdi:github", width=25),
-    href=appconfig.repository.github_url,
-    target="_blank",
-)
 
-version_app = dmc.Badge(
-    f"{projectconfig.project.version}",
-    # variant="dot",
-    size="md",
-)
+# FOOTER
 
 note_footer = dmc.Center(
     dmc.Text(
@@ -167,7 +165,7 @@ note_footer = dmc.Center(
                 target="_blank",
                 style={"fontSize": "0.8rem"},
             ),
-            "."
+            ".",
         ],
         c="dimmed",
         style={"fontSize": "0.8rem"},
@@ -198,6 +196,7 @@ appshell_main = dmc.AppShellMain(
             align="top",
         ),
         plot_mta_ridership_trends,
+        html.Div(id="div-cards-total-ridership"),
         dmc.Space(h="sm"),
         dmc.Center(plot1_llm_title),
         dmc.Group(
@@ -209,7 +208,6 @@ appshell_main = dmc.AppShellMain(
             justify="center",
             align="flex-end",
         ),
-        # plot1_insight,
         loading_plot1_insight,
         dmc.Space(h="xl"),
         dmc.Divider(variant="solid"),
