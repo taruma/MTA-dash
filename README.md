@@ -37,7 +37,7 @@ uv run app.py
 - Dash
 - Plotly
 - Pandas
-- OpenAI (for LLM insights)
+- aisuite (for LLM insights)
 - Dash Mantine Components
 - Dash Bootstrap Components
 
