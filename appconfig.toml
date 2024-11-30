@@ -1,14 +1,15 @@
-[DASH_APP]
-APP_TITLE = "MTA DASH"
-HEAD_TITLE = "taruma-mtadash | MTA DASH"
-UPDATE_TITLE = "Updating..."
-DEBUG = false
-ALIAS = "taruma-mtadash"
+[dash]
+title = "MTA Ridership Explorer: Trends and Post-Pandemic Recovery"
+subtitle = "An interactive dashboard to explore MTA ridership trends and post-pandemic recovery"
+page_title = "MTA Ridership Explorer by taruma"
+loading_message = "Updating..."
+debug = false
+alias = "taruma-mtadash"
 
-[TEMPLATE]
-WATERMARK_SOURCE = ""
-THEME = "MATERIA"
+[template]
+theme = "FLATLY"
+watermark_source = ""
 
-VERSION = "v1.2.0"
-GITHUB_LINK = "https://github.com/taruma/anfrek"
-GITHUB_REPO = "taruma/anfrek"
+[repository]
+github_url = "https://github.com/taruma/mtadash"
+github_repo = "taruma/mtadash"
