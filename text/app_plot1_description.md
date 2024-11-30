@@ -1,0 +1,4 @@
+This plot shows you two key metrics: **estimated ridership volumes** (_solid lines_) and **percentage drops from pre-pandemic levels** (_dotted lines_) - where lower percentage values indicate stronger recovery, and negative values show where current ridership exceeds pre-pandemic levels.
+You can customize your analysis by **selecting any combination** of MTA's seven services: 🚆 Subways, 🚌 Buses, 🚄 Long Island Rail Road, 🚉 Metro North, 🚐 Access-A-Ride, 🌉 Bridges and Tunnels, and 🚋 Staten Island Railway. 
+Adjust the timeframe using the **Start Date** and **End Date** selectors, and choose between **daily, weekly, monthly, or yearly** views to spot different patterns. 
+This interactive tool lets you compare services both by ___ridership volumes and recovery rates___, revealing interesting patterns such as how Bridges and Tunnels have shown stronger recovery compared to public transit services.
