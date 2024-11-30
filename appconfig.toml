@@ -7,9 +7,9 @@ debug = false
 alias = "taruma-mtadash"
 
 [template]
-theme = "FLATLY"
+theme = "JOURNAL"
 watermark_source = ""
 
 [repository]
-github_url = "https://github.com/taruma/mtadash"
-github_repo = "taruma/mtadash"
+github_url = "https://github.com/taruma/mta-dash"
+github_repo = "taruma/mta-dash"
