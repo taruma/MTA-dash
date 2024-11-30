@@ -1,5 +1,3 @@
-Overview Project
-
 **Project Overview: Metropolitan Transportation Authority (MTA) Ridership Dashboard**
 
 **Data Description:**
@@ -39,3 +37,9 @@ Overview Project
 - To effectively communicate the recovery trends of MTA services post-pandemic, offering valuable insights for decision-makers, while also demonstrating the power of data visualization and natural language processing in understanding complex datasets.
 
 ---
+
+Note resample period abbreviations:
+- "D": daily
+- "W": weekly
+- "ME": monthly
+- "YE": yearly
