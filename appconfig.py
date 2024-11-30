@@ -11,11 +11,16 @@ def dict_to_namespace(d):
     return SimpleNamespace(**d)
 
 _CONFIG_PATH = 'appconfig.toml'
+_PROJECT_PATH = 'pyproject.toml '
 
 with open(_CONFIG_PATH, 'rb') as f:
     config_dict = tomllib.load(f)
 
+with open(_PROJECT_PATH, 'rb') as f:
+    project_dict = tomllib.load(f)
+
 appconfig = dict_to_namespace(config_dict)
+projectconfig = dict_to_namespace(project_dict)
 
 # temporary override for development
 

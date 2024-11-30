@@ -2,7 +2,7 @@
 
 import dash_mantine_components as dmc
 from dash import dcc
-from appconfig import appconfig
+from appconfig import appconfig, projectconfig
 import pyfigure
 from datetime import date
 import pyfunc
@@ -145,6 +145,34 @@ loading_plot1_insight = dcc.Loading(
     type="default",
 )
 
+github_link = dmc.Anchor(
+    DashIconify(icon="mdi:github", width=25),
+    href=appconfig.repository.github_url,
+    target="_blank",
+)
+
+version_app = dmc.Badge(
+    f"{projectconfig.project.version}",
+    # variant="dot",
+    size="md",
+)
+
+note_footer = dmc.Center(
+    dmc.Text(
+        [
+            "This app was created as a submission for the ",
+            dmc.Anchor(
+                "Plotly & Maven Analytics Holiday Season App Challenge",
+                href="https://community.plotly.com/t/holiday-season-app-challenge-nyc-mta/88389",
+                target="_blank",
+                style={"fontSize": "0.8rem"},
+            ),
+            "."
+        ],
+        c="dimmed",
+        style={"fontSize": "0.8rem"},
+    )
+)
 
 # APPSHELL ====================================
 
@@ -152,6 +180,14 @@ appshell_main = dmc.AppShellMain(
     [
         main_title,
         main_subtitle,
+        dmc.Group(
+            [
+                version_app,
+                github_link,
+            ],
+            justify="center",
+            my="sm",
+        ),
         dmc.Divider(variant="solid"),
         dmc.Center(short_description),
         dmc.Center(plot_title),
@@ -177,6 +213,8 @@ appshell_main = dmc.AppShellMain(
         loading_plot1_insight,
         dmc.Space(h="xl"),
         dmc.Divider(variant="solid"),
+        dmc.Space(h="xl"),
+        note_footer,
     ]
 )
 
