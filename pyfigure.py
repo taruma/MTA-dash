@@ -182,7 +182,7 @@ def generate_ridership_recovery(
 
     if is_above_zero:
         fig.add_annotation(
-            text="<i><b>Beyond Recovery</b></i>",
+            text="<i><b>Surpassing 2019 Levels</b></i>",
             showarrow=False,
             x=1,
             xref="x domain",

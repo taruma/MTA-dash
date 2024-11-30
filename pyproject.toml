@@ -1,6 +1,6 @@
 [project]
 name = "mtadash"
-version = "1.0.0"
+version = "1.0.1"
 description = "MTA Dashboard"
 readme = "README.md"
 requires-python = ">=3.12"
