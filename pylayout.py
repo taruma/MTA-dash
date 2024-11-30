@@ -38,7 +38,7 @@ short_description = dmc.Center(
 # PLOT-1
 plot_title = dmc.Title("MTA Ridership Trends", order=2, my="md")
 plot_description_text = pyfunc.read_text_file("text/app_plot1_description.md")
-    
+
 plot_description = dmc.Text(
     dcc.Markdown(plot_description_text),
     ta="center",
@@ -109,6 +109,42 @@ resample_period_radio = dmc.RadioGroup(
     mb="sm",
 )
 
+# LLM
+
+plot1_llm_title = dmc.Title("Insight (with LLM)", order=3, my="md", size="md")
+llm_model = dmc.TextInput(
+    id="llm-model",
+    label="LLM Model (provider:model-name)",
+    value="openai:gpt-4o-mini",
+    placeholder="Enter model name with this format provider:model-name",
+    w=250,
+)
+llm_api_key = dmc.PasswordInput(
+    label="OpenAI API Key",
+    placeholder="sk-.....",
+    id="llm-api-key",
+    w=300,
+)
+
+placeholder_insight = pyfunc.read_text_file("text/app_plot1_insight.md")
+plot1_insight = dmc.Center(
+    dmc.Paper(
+        dcc.Markdown(placeholder_insight),
+        shadow="lg",
+        mt="md",
+        w="90%",
+        pt="md",
+        px="lg",
+        id="insight-text",
+    )
+)
+
+loading_plot1_insight = dcc.Loading(
+    id="loading-plot1-insight",
+    children=plot1_insight,
+    type="default",
+)
+
 
 # APPSHELL ====================================
 
@@ -126,6 +162,19 @@ appshell_main = dmc.AppShellMain(
             align="top",
         ),
         plot_mta_ridership_trends,
+        dmc.Space(h="sm"),
+        dmc.Center(plot1_llm_title),
+        dmc.Group(
+            [
+                llm_model,
+                llm_api_key,
+                dmc.Button("Generate Insight", id="button-llm", variant="gradient"),
+            ],
+            justify="center",
+            align="flex-end",
+        ),
+        # plot1_insight,
+        loading_plot1_insight,
         dmc.Space(h="xl"),
         dmc.Divider(variant="solid"),
     ]
