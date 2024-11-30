@@ -11,7 +11,7 @@ def dict_to_namespace(d):
     return SimpleNamespace(**d)
 
 _CONFIG_PATH = 'appconfig.toml'
-_PROJECT_PATH = 'pyproject.toml '
+_PROJECT_PATH = 'pyproject.toml'
 
 with open(_CONFIG_PATH, 'rb') as f:
     config_dict = tomllib.load(f)
