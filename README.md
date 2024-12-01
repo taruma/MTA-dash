@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
-This interactive dashboard, "MTA Ridership Explorer," provides a comprehensive view into ridership trends and post-pandemic recovery across the Metropolitan Transportation Authority (MTA) network in New York City. Explore daily ridership data across various MTA services, including subways, buses, commuter rails (LIRR and Metro-North), paratransit (Access-A-Ride), bridges and tunnels, and the Staten Island Railway. The dashboard aims to highlight ridership patterns since the start of the COVID-19 pandemic, offering a glimpse into recovery trends and the current state of public transit usage. Users can switch between daily, weekly, monthly, and yearly views to examine the data and compare both absolute ridership numbers and the percentage recovered compared to pre-pandemic levels.
+This interactive dashboard, "**MTA Ridership Explorer**," provides a comprehensive view into ridership trends and post-pandemic recovery across the Metropolitan Transportation Authority (MTA) network in New York City. Explore daily ridership data across various MTA services, including subways, buses, commuter rails (LIRR and Metro-North), paratransit (Access-A-Ride), bridges and tunnels, and the Staten Island Railway. The dashboard aims to highlight ridership patterns since the start of the COVID-19 pandemic, offering a glimpse into recovery trends and the current state of public transit usage. Users can switch between daily, weekly, monthly, and yearly views to examine the data and compare both absolute ridership numbers and the percentage recovered compared to pre-pandemic levels.
 
 ## Features
 
@@ -44,7 +44,7 @@ Requires **Python 3.12**
     ```sh
     uv run app.py
     ```
-    
+
 ## Usage
 
 After running the dashboard, open your browser and navigate to your app to start exploring MTA ridership data.
