@@ -43,7 +43,7 @@ short_description = dmc.Center(
 )
 
 # PLOT-1
-plot_title = dmc.Title("MTA Ridership Trends", order=2, my="md")
+plot_title = dmc.Title("MTA Ridership Trends", order=2, my="md", ta="center")
 plot_description_text = pyfunc.read_text_file("text/app_plot1_description.md")
 
 plot_description = dmc.Text(
