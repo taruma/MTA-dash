@@ -8,6 +8,8 @@ import os
 
 dotenv.load_dotenv()
 
+## CONSTANTS ##
+
 PATH_DATASET = "data/MTA_Daily_Ridership.csv"
 MTA_COLUMN_NAMES = [
     "date",
@@ -38,13 +40,19 @@ TRANSPORTATION_NAMES = [
     "Staten Island Railway",
 ]
 TRANSPORTATION_EMOJI = ["🚆", "🚌", "🚄", "🚉", "🚐", "🌉", "🚋"]
-PERIOD_ABBR = [
+TIME_FREQUENCY_LABELS = [
     ["D", "Daily"],
     ["W", "Weekly"],
     ["ME", "Monthly"],
     ["YE", "Yearly"],
 ]
 
+## VARIABLES ##
+
+# TODO: Refactor: Delete this after refactoring
+transportation_labels = list(
+    zip(TRANSPORTATION_MODES, TRANSPORTATION_NAMES, TRANSPORTATION_EMOJI)
+)
 
 ridership_columns = [
     column
@@ -52,6 +60,31 @@ ridership_columns = [
     if any(suffix in column for suffix in RIDERSHIP_SUFFIXES)
 ]
 recovery_columns = [col for col in MTA_COLUMN_NAMES if "recovery" in col]
+
+mta_dict = {}
+for mode, name, emoji in zip(
+    TRANSPORTATION_MODES,
+    TRANSPORTATION_NAMES,
+    TRANSPORTATION_EMOJI,
+):
+    _selected_ridership_column = [
+        col for col in ridership_columns if col.startswith(mode)
+    ][0]
+    _selected_recovery_column = [
+        col for col in recovery_columns if col.startswith(mode)
+    ]
+
+    mta_dict[mode] = {
+        "mode": mode,
+        "name": name,
+        "emoji": emoji,
+        "label": f"{emoji} {name}",
+        "ridership_column": _selected_ridership_column,
+        "recovery_column": _selected_recovery_column,
+    }
+
+
+## FUNCTIONS ##
 
 
 def get_mta_daily(path_dataset: str = PATH_DATASET) -> pd.DataFrame:
@@ -124,8 +157,12 @@ def generate_insight(
         end_date = end_date if end_date is not None else "2024-10-31"
 
         client = ai.Client({"openai": dict(api_key=llm_api_key)})
-        
-        period = [label for resample, label in PERIOD_ABBR if resample == resample_period][0]
+
+        period = [
+            label
+            for resample, label in TIME_FREQUENCY_LABELS
+            if resample == resample_period
+        ][0]
 
         plot_description = read_text_file("text/app_plot1_description.md")
 
