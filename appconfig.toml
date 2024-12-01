@@ -7,7 +7,7 @@ debug = false
 alias = "taruma-mtadash"
 
 [template]
-theme = "JOURNAL"
+theme = "MATERIA"
 watermark_source = ""
 
 [repository]
