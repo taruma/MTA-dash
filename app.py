@@ -69,11 +69,20 @@ app.layout = pylayout.appshell_layout
         Input("date-picker-start", "value"),
         Input("date-picker-end", "value"),
         Input("multi-select-transportation", "value"),
+        Input("check-disable-ridership", "checked"),
+        Input("check-disable-drop", "checked"),
     ],
 )
-def update_figure_cards(selected_time_frequency, start_date, start_end, selected_modes):
+def update_figure_cards(
+    selected_time_frequency,
+    start_date,
+    start_end,
+    selected_modes,
+    disable_ridership,
+    disable_drop,
+):
     """Update the figure and cards."""
-    
+
     selected_modes = mta_data.keys() if not selected_modes else selected_modes
 
     figure = pyfigure.generate_ridership_recovery(
@@ -82,6 +91,8 @@ def update_figure_cards(selected_time_frequency, start_date, start_end, selected
         start_date,
         start_end,
         selected_time_frequency,
+        disable_ridership,
+        disable_drop
     )
 
     cards = pylayoutfunc.generate_layout_card_total_ridership(

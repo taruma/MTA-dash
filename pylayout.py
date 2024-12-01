@@ -97,6 +97,15 @@ multi_select = dmc.MultiSelect(
     # w=750,
 )
 
+# SHOW RIDERSHIP/RECOVERY/DROP ONLY
+check_ridership = dmc.Checkbox(
+    id="check-disable-ridership", label="Hide Ridership", checked=False, size="sm"
+)
+
+check_drop = dmc.Checkbox(
+    id="check-disable-drop", label="Hide Drop", checked=False
+)
+
 # SELECT RESAMPLE PERIOD
 radio_data = [
     ["D", "Daily"],
@@ -193,9 +202,23 @@ appshell_main = dmc.AppShellMain(
         dmc.Group(
             [multi_select, date_picker_start, date_picker_end, resample_period_radio],
             justify="center",
-            align="top",
+            align="buttom",
         ),
         plot_mta_ridership_trends,
+        dmc.Space(h="sm"),
+        dmc.Text("Additional Setting", c="dimmed", size="md", fw=500, ta="center"),
+        dmc.Space(h="sm"),
+        dmc.Flex(
+            [
+                check_ridership,
+                check_drop,
+            ],
+            justify="center",
+            align="center",
+            gap="md",
+        ),
+        dmc.Space(h="sm"),
+        dmc.Text("At a Glance Stats", c="dimmed", size="md", fw=500, ta="center"),
         html.Div(id="div-cards-total-ridership"),
         dmc.Space(h="sm"),
         dmc.Center(plot1_llm_title),
