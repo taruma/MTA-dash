@@ -64,6 +64,7 @@ app.layout = pylayout.appshell_layout
 @app.callback(
     Output(component_id="plot-mta-ridership-recovery", component_property="figure"),
     Output("div-cards-total-ridership", "children"),
+    Output("div-cards-highest-recovery", "children"),
     [
         Input("radiogroup-resample", "value"),
         Input("date-picker-start", "value"),
@@ -95,11 +96,15 @@ def update_figure_cards(
         disable_drop
     )
 
-    cards = pylayoutfunc.generate_layout_card_total_ridership(
+    ridership_cards = pylayoutfunc.generate_layout_card_total_ridership(
         mta_data, selected_modes, start_date, start_end
     )
 
-    return figure, cards
+    recovery_cards = pylayoutfunc.generate_layout_card_highest_recovery(
+        mta_data, selected_modes, start_date, start_end, selected_time_frequency
+    )
+
+    return figure, ridership_cards, recovery_cards
 
 
 @app.callback(

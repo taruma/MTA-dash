@@ -46,6 +46,7 @@ TIME_FREQUENCY_LABELS = [
     ["ME", "Monthly"],
     ["YE", "Yearly"],
 ]
+TIME_FREQUENCY_DICT = dict(TIME_FREQUENCY_LABELS)
 
 ## VARIABLES ##
 

@@ -15,7 +15,9 @@ main_subtitle_text = appconfig.dash.subtitle
 # MAIN ========================================
 
 # TITLE
-main_title = dmc.Text(main_title_text, mt="xl", ta="center", size="2rem", fw=700, mb="xs")
+main_title = dmc.Text(
+    main_title_text, mt="xl", ta="center", size="2rem", fw=700, mb="xs"
+)
 main_subtitle = dmc.Text(main_subtitle_text, c="dimmed", size="1.2rem", ta="center")
 
 
@@ -42,7 +44,9 @@ short_description = dmc.Center(
 )
 
 # PLOT-1
-plot_title = dmc.Text("MTA Ridership Trends", my="md", ta="center", size="1.5rem", fw=600)
+plot_title = dmc.Text(
+    "MTA Ridership Trends", my="md", ta="center", size="1.5rem", fw=600
+)
 plot_description_text = pyfunc.read_text_file("text/app_plot1_description.md")
 
 plot_description = dmc.Text(
@@ -124,7 +128,9 @@ resample_period_radio = dmc.RadioGroup(
 
 # LLM
 
-plot1_llm_title = dmc.Text("Insight (with LLM)", my="md", size="md", fw=600, ta="center")
+plot1_llm_title = dmc.Text(
+    "Insight (with LLM)", my="md", size="md", fw=600, ta="center"
+)
 llm_model = dmc.TextInput(
     id="llm-model",
     label="LLM Model (provider:model-name)",
@@ -195,7 +201,7 @@ appshell_main = dmc.AppShellMain(
         dmc.Divider(variant="solid"),
         dmc.Center(short_description),
         dmc.Divider(variant="solid", m="md"),
-        plot_title, 
+        plot_title,
         plot_description,
         dmc.Group(
             [multi_select, date_picker_start, date_picker_end, resample_period_radio],
@@ -216,8 +222,20 @@ appshell_main = dmc.AppShellMain(
             gap="md",
         ),
         dmc.Space(h="sm"),
-        dmc.Text("At a Glance Stats", c="dimmed", size="md", fw=500, ta="center"),
-        html.Div(id="div-cards-total-ridership"),
+        dmc.Divider(label="At a Glance Stats", variant="dashed", labelPosition="center"),
+        # dmc.Text("At a Glance Stats", c="dimmed", size="md", fw=500, ta="center"),
+        dmc.Space(h="sm"),
+        dmc.SimpleGrid(
+            [
+                html.Div(id="div-cards-total-ridership"),
+                html.Div(id="div-cards-highest-recovery")
+            ],
+            cols=2,
+            spacing="md",
+            verticalSpacing="xs"
+        ),
+        dmc.Space(h="sm"),
+        dmc.Divider(variant="dashed"),
         dmc.Space(h="sm"),
         plot1_llm_title,
         dmc.Group(
