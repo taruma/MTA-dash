@@ -1,8 +1,6 @@
 """Module for layout functions."""
 
 import dash_mantine_components as dmc
-import pyfunc
-import pandas as pd
 
 
 def generate_card_total_ridership(label, total_ridership):
@@ -35,46 +33,21 @@ def generate_card_total_ridership(label, total_ridership):
 
 
 def generate_layout_card_total_ridership(
-    mta_daily_ridership: pd.DataFrame,
-    resample_period: str = None,
-    date_start: str = None,
-    date_end: str = None,
-    modes: list = None,
-):
+    mta_data: dict,
+    selected_modes: list = None,
+    start_date: str = None,
+    end_date: str = None,
+) -> dmc.Group:
     """Generate a layout card with total ridership."""
 
-    # TODO: Refactor this with pyfigure.generate_ridership_recovery
-
-    resample_period = "W" if resample_period is None else resample_period
-    date_start = mta_daily_ridership.index.min() if date_start is None else date_start
-    date_end = mta_daily_ridership.index.max() if date_end is None else date_end
-    modes = pyfunc.TRANSPORTATION_MODES if (modes is None) or (not modes) else modes
-
-    mta_daily_ridership = mta_daily_ridership.loc[date_start:date_end]
-
-    transportation_label = list(
-        zip(
-            pyfunc.TRANSPORTATION_MODES,
-            pyfunc.TRANSPORTATION_NAMES,
-            pyfunc.TRANSPORTATION_EMOJI,
-        )
-    )
-
-    selected_transportation_label = [
-        (mode, name, emoji)
-        for mode, name, emoji in transportation_label
-        if mode in modes
-    ]
-
     selected_cards = []
-    for mode, name, emoji in selected_transportation_label:
-        ridership_column = [
-            col for col in mta_daily_ridership.columns if col.startswith(mode)
-        ][0]
 
-        total_ridership = mta_daily_ridership[ridership_column].sum()
-        label = f"{emoji} {name}"
-        selected_cards.append(generate_card_total_ridership(label, total_ridership))
+    for mode in selected_modes:
+        filtered_ridership = mta_data[mode]["data_ridership"].loc[start_date:end_date]
+        total_ridership = filtered_ridership.sum()
+
+        card = generate_card_total_ridership(mta_data[mode]["label"], total_ridership)
+        selected_cards.append(card)
 
     return dmc.Group(
         selected_cards,
