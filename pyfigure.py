@@ -122,7 +122,7 @@ def generate_ridership_recovery(
             legendgrouptitle_text=mta_data[mode]["label"],
             line_dash="dot",
             line_color=colors[counter],
-            line_width=2,
+            line_width=3,
             visible="legendonly" if disable_drop else True,
         )
 
