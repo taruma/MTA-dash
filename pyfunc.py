@@ -49,11 +49,6 @@ TIME_FREQUENCY_LABELS = [
 
 ## VARIABLES ##
 
-# TODO: Refactor: Delete this after refactoring
-transportation_labels = list(
-    zip(TRANSPORTATION_MODES, TRANSPORTATION_NAMES, TRANSPORTATION_EMOJI)
-)
-
 ridership_columns = [
     column
     for column in MTA_COLUMN_NAMES
@@ -72,7 +67,7 @@ for mode, name, emoji in zip(
     ][0]
     _selected_recovery_column = [
         col for col in recovery_columns if col.startswith(mode)
-    ]
+    ][0]
 
     mta_dict[mode] = {
         "mode": mode,

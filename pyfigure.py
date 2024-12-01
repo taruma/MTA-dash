@@ -4,11 +4,9 @@ from itertools import cycle, islice
 import plotly.graph_objects as go
 
 # import plotly.express as px
-import pandas as pd
 from plotly.subplots import make_subplots
 from appconfig import appconfig
 from pytemplate import mytemplate
-import pyfunc
 
 
 def generate_watermark(subplot_number: int = 1) -> dict:
@@ -73,64 +71,43 @@ def generate_empty_figure(
 
 
 def generate_ridership_recovery(
-    mta_daily_ridership: pd.DataFrame,
-    mta_daily_recovery: pd.DataFrame,
-    resample_period: str = None,
-    date_start: str = None,
-    date_end: str = None,
-    modes: list = None,
+    mta_data: dict,
+    selected_modes: list = None,
+    start_date: str = None,
+    start_end: str = None,
+    time_frequency: str = None,
 ) -> go.Figure:
     """GENERATE FIGURE RIDERSHIP RECOVERY"""
 
-    resample_period = "W" if resample_period is None else resample_period
-    date_start = mta_daily_ridership.index.min() if date_start is None else date_start
-    date_end = mta_daily_ridership.index.max() if date_end is None else date_end
-    modes = pyfunc.TRANSPORTATION_MODES if (modes is None) or (not modes) else modes
-
-    mta_daily_ridership = mta_daily_ridership.loc[date_start:date_end]
-    mta_daily_recovery = mta_daily_recovery.loc[date_start:date_end]
-
-    transportation_label = list(zip(pyfunc.TRANSPORTATION_MODES, pyfunc.TRANSPORTATION_NAMES, pyfunc.TRANSPORTATION_EMOJI))
-
-    selected_transportation_label = [
-        (mode, name, emoji)
-        for mode, name, emoji in transportation_label if mode in modes
-    ]
-
     colorway = mytemplate.layout.colorway
-    colors = list(islice(cycle(colorway), len(selected_transportation_label)))
+    colors = list(islice(cycle(colorway), len(selected_modes)))
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    is_above_zero = False
+    is_surpass_baseline = False
 
-    for counter, (mode, mode_name, emoji) in enumerate(
-        selected_transportation_label
-    ):
-        is_legend_visible = True # if counter == 0 else "legendonly"
+    for counter, mode in enumerate(selected_modes):
+        data_ridership = mta_data[mode]["data_ridership"]
+        data_drop = mta_data[mode]["data_drop"]
 
-        ridership_column = [
-            col for col in mta_daily_ridership.columns if col.startswith(mode)
-        ][0]
-        recovery_column = [
-            col for col in mta_daily_recovery.columns if col.startswith(mode)
-        ][0]
-
-        selected_ridership = (
-            mta_daily_ridership[ridership_column].resample(resample_period).sum()
+        filtered_ridership = (
+            data_ridership.loc[start_date:start_end].resample(time_frequency).sum()
         )
-        selected_recovery = 1 - (
-            mta_daily_recovery[recovery_column].resample(resample_period).mean()
-        ) / 100
+        filtered_drop = (
+            data_drop.loc[start_date:start_end].resample(time_frequency).mean()
+        )
 
-        is_above_zero = is_above_zero or (selected_recovery < 0).any()
+        # TODO: add option to pick "legendonly" line
+        is_legend_visible = True
+
+        is_surpass_baseline = is_surpass_baseline or ((filtered_drop < 0).any())
 
         ridership_trace = go.Scatter(
-            x=selected_ridership.index,
-            y=selected_ridership.values,
-            name=f"{mode}_ridership",
+            x=filtered_ridership.index,
+            y=filtered_ridership.values,
+            name=mta_data[mode]["ridership_column"],
             legendgroup=mode,
-            legendgrouptitle_text=f"{emoji} {mode_name}",
+            legendgrouptitle_text=mta_data[mode]["label"],
             line_color=colors[counter],
             line_width=3,
             hovertemplate="%{y}",
@@ -138,12 +115,12 @@ def generate_ridership_recovery(
         )
 
         recovery_trace = go.Scatter(
-            x=selected_recovery.index,
-            y=selected_recovery.values,
-            name=f"{mode}_drop",
+            x=filtered_drop.index,
+            y=filtered_drop.values,
+            name=f"{mode}_drop",  # no "drop_column" in mta_data
             yaxis="y2",
             legendgroup=mode,
-            legendgrouptitle_text=f"{emoji} {mode_name}",
+            legendgrouptitle_text=mta_data[mode]["label"],
             line_dash="dot",
             line_color=colors[counter],
             line_width=2,
@@ -178,9 +155,10 @@ def generate_ridership_recovery(
         ),
     )
 
-    fig.add_hline(y=0, line_dash="dash",line_color=colors[0], line_width=2, yref="y2")
-
-    if is_above_zero:
+    if is_surpass_baseline:
+        fig.add_hline(
+            y=0, line_dash="dash", line_color=colors[0], line_width=2, yref="y2"
+        )
         fig.add_annotation(
             text="<i><b>Surpassing 2019 Levels</b></i>",
             showarrow=False,
@@ -190,7 +168,6 @@ def generate_ridership_recovery(
             y=0,
             yref="y2",
             yanchor="top",
-
         )
 
     return fig

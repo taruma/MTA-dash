@@ -45,8 +45,12 @@ mta_daily_drop = 1 - (mta_daily_recovery / 100)
 mta_data = pyfunc.mta_dict
 
 for mode in mta_data:
-    mta_data[mode]["data_ridership"] = mta_daily_ridership[mta_data[mode]["ridership_column"]]
-    mta_data[mode]["data_recovery"] = mta_daily_recovery[mta_data[mode]["recovery_column"]]
+    mta_data[mode]["data_ridership"] = mta_daily_ridership[
+        mta_data[mode]["ridership_column"]
+    ]
+    mta_data[mode]["data_recovery"] = mta_daily_recovery[
+        mta_data[mode]["recovery_column"]
+    ]
     mta_data[mode]["data_drop"] = mta_daily_drop[mta_data[mode]["recovery_column"]]
 
 
@@ -67,23 +71,21 @@ app.layout = pylayout.appshell_layout
         Input("multi-select-transportation", "value"),
     ],
 )
-def update_output_div(selected_time_frequency, start_date, start_end, selected_modes):
- 
-    figure = pyfigure.generate_ridership_recovery(
-        mta_daily_ridership,
-        mta_daily_recovery,
-        selected_time_frequency,
-        start_date,
-        start_end,
-        selected_modes,
-    )
+def update_figure_cards(selected_time_frequency, start_date, start_end, selected_modes):
+    """Update the figure and cards."""
+    
+    selected_modes = mta_data.keys() if not selected_modes else selected_modes
 
-    cards = pylayoutfunc.generate_layout_card_total_ridership(
+    figure = pyfigure.generate_ridership_recovery(
         mta_data,
         selected_modes,
         start_date,
-        start_end
+        start_end,
+        selected_time_frequency,
+    )
 
+    cards = pylayoutfunc.generate_layout_card_total_ridership(
+        mta_data, selected_modes, start_date, start_end
     )
 
     return figure, cards
