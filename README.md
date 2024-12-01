@@ -6,13 +6,13 @@ This interactive dashboard, "MTA Ridership Explorer," provides a comprehensive v
 
 ## Features
 
-- **Interactive Trend Analysis:** Visualize ridership recovery trends with interactive line charts, comparing both estimated ridership volumes and percentage drops from pre-pandemic levels.
-- **Multi-Service Selection:**  Analyze any combination of MTA's services – Subways, Buses, Long Island Rail Road, Metro-North, Access-A-Ride, Bridges and Tunnels, and Staten Island Railway – to uncover distinct recovery patterns.
-- **Flexible Timeframes:**  Adjust the analysis period using start and end date selectors to focus on specific time windows and observe recovery rates over different durations.
-- **Granular Data Aggregation:** Switch between daily, weekly, monthly, and yearly views to gain insights into short-term fluctuations and long-term trends.
-- **At-a-Glance Statistics:** Quickly grasp key performance indicators such as peak ridership and recovery percentages for each selected service.
-- **AI-Powered Insights:** Leverage the power of Large Language Models (LLMs) to generate insightful narratives and summaries of the displayed ridership trends, adding context and understanding to the visualizations. *(Note: Remember to independently verify LLM-generated insights.)*
-- **Open Source & Customizable:** The code for this dashboard is available on GitHub, allowing for customization and extension.
+- **📊 Interactive Trend Analysis:** Visualize ridership recovery trends with interactive line charts, comparing both estimated ridership volumes and percentage drops from pre-pandemic levels.
+- **🚆🚌 Multi-Service Selection:**  Analyze any combination of MTA's services – Subways, Buses, Long Island Rail Road, Metro-North, Access-A-Ride, Bridges and Tunnels, and Staten Island Railway – to uncover distinct recovery patterns.
+- **🗓️ Flexible Timeframes:**  Adjust the analysis period using start and end date selectors to focus on specific time windows and observe recovery rates over different durations.
+- **📅 Granular Data Aggregation:** Switch between daily, weekly, monthly, and yearly views to gain insights into short-term fluctuations and long-term trends.
+- **📈 At-a-Glance Statistics:** Quickly grasp key performance indicators such as peak ridership and recovery percentages for each selected service.
+- **🤖 AI-Powered Insights:** Leverage the power of Large Language Models (LLMs) to generate insightful narratives and summaries of the displayed ridership trends, adding context and understanding to the visualizations. *(Note: Remember to independently verify LLM-generated insights.)*
+- **💻 Open Source & Customizable:** The code for this dashboard is available on GitHub, allowing for customization and extension.
 
 
 ## Installation
