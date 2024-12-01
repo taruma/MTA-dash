@@ -8,7 +8,14 @@ def generate_card_total_ridership(label, total_ridership):
 
     card = dmc.Card(
         children=[
-            dmc.Text("Total Ridership Reached", size="xs", fs="italic", ta="center"),
+            dmc.CardSection(
+                withBorder=True,
+                bg="gray",
+                h="0.5rem",
+            ),
+            dmc.Text(
+                "Total Ridership Reached", size="xs", fs="italic", ta="center", mt="xs"
+            ),
             dmc.Text(
                 dmc.NumberFormatter(value=total_ridership, thousandSeparator=True),
                 size="xl",
@@ -26,7 +33,6 @@ def generate_card_total_ridership(label, total_ridership):
         withBorder=True,
         shadow="md",
         radius="md",
-        # w=250,
     )
 
     return card
