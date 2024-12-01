@@ -44,6 +44,7 @@ Requires **Python 3.12**
     ```sh
     uv run app.py
     ```
+    
 ## Usage
 
 After running the dashboard, open your browser and navigate to your app to start exploring MTA ridership data.
