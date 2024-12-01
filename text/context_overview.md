@@ -29,10 +29,6 @@
 - Investigate seasonal trends and day-of-week variations in ridership as part of the recovery analysis.
 - Provide actionable insights for transport authorities to enhance service delivery and cater to changing commuter patterns.
 
-**User Engagement:**
-- The dashboard will feature interactive visualizations, enabling users to explore data by selecting specific date ranges, transportation modes, and targeted insights.
-- The integration of an LLM will provide users with narrative descriptions of the data, making it accessible to both data-savvy users and the general public.
-
 **End Goal:**
 - To effectively communicate the recovery trends of MTA services post-pandemic, offering valuable insights for decision-makers, while also demonstrating the power of data visualization and natural language processing in understanding complex datasets.
 

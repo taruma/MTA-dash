@@ -120,6 +120,7 @@ def read_text_file(file_path):
 def fig_to_base64(fig):
     # Convert plot to PNG image
     img_bytes = fig.to_image(format="png", width=1200, height=500, scale=1)
+    # fig.write_image("fig.png", width=1200, height=500, scale=1)
 
     # Encode to base64
     img_base64 = base64.b64encode(img_bytes).decode("utf-8")
@@ -159,8 +160,6 @@ def generate_insight(
             if resample == resample_period
         ][0]
 
-        plot_description = read_text_file("text/app_plot1_description.md")
-
         messages = [
             {"role": "system", "content": system_prompt},
             {
@@ -169,10 +168,6 @@ def generate_insight(
                     {
                         "type": "text",
                         "text": f"Here's overview of this project: {context_overview}",
-                    },
-                    {
-                        "type": "text",
-                        "text": f"Here's description before of the plot: {plot_description}",
                     },
                     {
                         "type": "image_url",
