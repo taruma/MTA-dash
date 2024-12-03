@@ -155,10 +155,16 @@ def update_insight(
     for mode in selected_mta:
         selected_mta_label.append(mta_data[mode]["label"])
         data_ridership.append(
-            mta_data[mode]["data_ridership"].resample(time_frequency).sum()
+            mta_data[mode]["data_ridership"]
+            .loc[start_date:end_date]
+            .resample(time_frequency)
+            .sum()
         )
         data_recovery.append(
-            mta_data[mode]["data_recovery"].resample(time_frequency).mean()
+            mta_data[mode]["data_recovery"]
+            .loc[start_date:end_date]
+            .resample(time_frequency)
+            .mean()
         )
 
     data_ridership = pd.concat(data_ridership, axis=1)
