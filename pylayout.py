@@ -168,15 +168,8 @@ loading_plot1_insight = dcc.Loading(
 
 # LAYOUT BUTTON
 
-button_llm = html.Div(
+modal_llm_setting = html.Div(
     [
-        # dmc.Button("Open Modal", id="modal-demo-button"),
-        dmc.ActionIcon(
-            DashIconify(icon="clarity:settings-line", width=20),
-            size="lg",
-            variant="gradient",
-            id="modal-demo-button",
-        ),
         dmc.Modal(
             title=dmc.Text("LLM Settings", c="dimmed", size="lg", ta="center"),
             id="modal-simple",
@@ -205,7 +198,7 @@ button_llm = html.Div(
                 ),
             ],
             size="lg",
-            centered=True
+            centered=True,
         ),
     ]
 )
@@ -269,7 +262,6 @@ appshell_main = dmc.AppShellMain(
         dmc.Divider(
             label="At a Glance Stats", variant="dashed", labelPosition="center"
         ),
-        # dmc.Text("At a Glance Stats", c="dimmed", size="md", fw=500, ta="center"),
         dmc.Space(h="sm"),
         dmc.SimpleGrid(
             [
@@ -283,14 +275,19 @@ appshell_main = dmc.AppShellMain(
         dmc.Space(h="sm"),
         dmc.Divider(variant="dashed"),
         dmc.Space(h="sm"),
+        modal_llm_setting,
         plot1_llm_title,
         dmc.Group(
             [
-                button_llm,
-                # button_llm,
-                # llm_model,
-                # llm_api_key,
-                dmc.Button("Generate Insight", id="button-llm", variant="gradient", size="sm"),
+                dmc.ActionIcon(
+                    DashIconify(icon="clarity:settings-line", width=20),
+                    size="lg",
+                    variant="gradient",
+                    id="modal-demo-button",
+                ),
+                dmc.Button(
+                    "Generate Insight", id="button-llm", variant="gradient", size="sm"
+                ),
             ],
             justify="center",
             align="center",
