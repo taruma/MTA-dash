@@ -142,6 +142,17 @@ def update_insight(
     return dcc.Markdown(insight)
 
 
+@app.callback(
+    Output("modal-simple", "opened"),
+    Input("modal-demo-button", "n_clicks"),
+    Input("modal-close-button", "n_clicks"),
+    State("modal-simple", "opened"),
+    prevent_initial_call=True,
+)
+def modal_demo(_1, _2, opened):
+    return not opened
+
+
 # Run the app
 if __name__ == "__main__":
     app.run_server(debug=DEBUG_MODE)

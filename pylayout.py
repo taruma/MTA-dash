@@ -105,7 +105,9 @@ check_ridership = dmc.Checkbox(
     id="check-disable-ridership", label="Hide Ridership Trend", checked=False, size="sm"
 )
 
-check_drop = dmc.Checkbox(id="check-disable-drop", label="Hide Percentage Drop Trend", checked=False)
+check_drop = dmc.Checkbox(
+    id="check-disable-drop", label="Hide Percentage Drop Trend", checked=False
+)
 
 # SELECT RESAMPLE PERIOD
 radio_data = [
@@ -164,7 +166,49 @@ loading_plot1_insight = dcc.Loading(
     type="default",
 )
 
+# LAYOUT BUTTON
 
+button_llm = html.Div(
+    [
+        # dmc.Button("Open Modal", id="modal-demo-button"),
+        dmc.ActionIcon(
+            DashIconify(icon="clarity:settings-line", width=20),
+            size="lg",
+            variant="gradient",
+            id="modal-demo-button",
+        ),
+        dmc.Modal(
+            title=dmc.Text("LLM Settings", c="dimmed", size="lg", ta="center"),
+            id="modal-simple",
+            children=[
+                dmc.Group(
+                    [
+                        # button_llm,
+                        llm_model,
+                        llm_api_key,
+                    ],
+                    justify="flex-start",
+                    align="flex-end",
+                    grow=True,
+                ),
+                dmc.Space(h=20),
+                dmc.Group(
+                    [
+                        dmc.Button(
+                            "Close",
+                            color="red",
+                            variant="outline",
+                            id="modal-close-button",
+                        ),
+                    ],
+                    justify="flex-end",
+                ),
+            ],
+            size="lg",
+            centered=True
+        ),
+    ]
+)
 # FOOTER
 
 note_footer = dmc.Center(
@@ -222,17 +266,19 @@ appshell_main = dmc.AppShellMain(
             gap="md",
         ),
         dmc.Space(h="sm"),
-        dmc.Divider(label="At a Glance Stats", variant="dashed", labelPosition="center"),
+        dmc.Divider(
+            label="At a Glance Stats", variant="dashed", labelPosition="center"
+        ),
         # dmc.Text("At a Glance Stats", c="dimmed", size="md", fw=500, ta="center"),
         dmc.Space(h="sm"),
         dmc.SimpleGrid(
             [
                 html.Div(id="div-cards-total-ridership"),
-                html.Div(id="div-cards-highest-recovery")
+                html.Div(id="div-cards-highest-recovery"),
             ],
             cols=2,
             spacing="md",
-            verticalSpacing="xs"
+            verticalSpacing="xs",
         ),
         dmc.Space(h="sm"),
         dmc.Divider(variant="dashed"),
@@ -240,12 +286,14 @@ appshell_main = dmc.AppShellMain(
         plot1_llm_title,
         dmc.Group(
             [
-                llm_model,
-                llm_api_key,
-                dmc.Button("Generate Insight", id="button-llm", variant="gradient"),
+                button_llm,
+                # button_llm,
+                # llm_model,
+                # llm_api_key,
+                dmc.Button("Generate Insight", id="button-llm", variant="gradient", size="sm"),
             ],
             justify="center",
-            align="flex-end",
+            align="center",
         ),
         loading_plot1_insight,
         dmc.Space(h="xl"),
