@@ -130,9 +130,6 @@ resample_period_radio = dmc.RadioGroup(
 
 # LLM
 
-plot1_llm_title = dmc.Text(
-    "Insight (with LLM)", my="md", size="md", fw=600, ta="center"
-)
 llm_model = dmc.TextInput(
     id="llm-model",
     label="LLM Model (provider:model-name)",
@@ -145,6 +142,17 @@ llm_api_key = dmc.PasswordInput(
     placeholder="sk-.....",
     id="llm-api-key",
     w=300,
+)
+
+default_question = pyfunc.read_text_file("text/default_question.md")
+
+llm_question = dmc.Textarea(
+    id="llm-question",
+    label=dmc.Text("🔍 Uncover Insights with 🤖 LLM", size="lg", fw=600),
+    value=default_question,
+    description="What do you want to know about the data?",
+    w=1200,
+    size="md",
 )
 
 placeholder_insight = pyfunc.read_text_file("text/app_plot1_insight.md")
@@ -172,7 +180,7 @@ modal_llm_setting = html.Div(
     [
         dmc.Modal(
             title=dmc.Text("LLM Settings", c="dimmed", size="lg", ta="center"),
-            id="modal-simple",
+            id="modal-llm-setting",
             children=[
                 dmc.Group(
                     [
@@ -191,7 +199,7 @@ modal_llm_setting = html.Div(
                             "Close",
                             color="red",
                             variant="outline",
-                            id="modal-close-button",
+                            id="modal-llm-setting-close-button",
                         ),
                     ],
                     justify="flex-end",
@@ -274,16 +282,23 @@ appshell_main = dmc.AppShellMain(
         ),
         dmc.Space(h="sm"),
         dmc.Divider(variant="dashed"),
-        dmc.Space(h="sm"),
+        dmc.Space(h="md"),
         modal_llm_setting,
-        plot1_llm_title,
+        dmc.Center(llm_question),
+        dmc.Space(h="sm"),
         dmc.Group(
             [
                 dmc.ActionIcon(
                     DashIconify(icon="clarity:settings-line", width=20),
                     size="lg",
                     variant="gradient",
-                    id="modal-demo-button",
+                    id="modal-llm-setting-button",
+                ),
+                dmc.ActionIcon(
+                    DashIconify(icon="clarity:eye-show-line", width=20),
+                    size="lg",
+                    variant="gradient",
+                    id="modal-prompt-button",
                 ),
                 dmc.Button(
                     "Generate Insight", id="button-llm", variant="gradient", size="sm"

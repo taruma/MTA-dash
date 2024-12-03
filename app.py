@@ -136,17 +136,17 @@ def update_insight(
         llm_api_key=llm_api_key,
         start_date=start_date,
         end_date=end_date,
-        resample_period=resample_period,
+        time_frequency=resample_period,
     )
 
     return dcc.Markdown(insight)
 
 
 @app.callback(
-    Output("modal-simple", "opened"),
-    Input("modal-demo-button", "n_clicks"),
-    Input("modal-close-button", "n_clicks"),
-    State("modal-simple", "opened"),
+    Output("modal-llm-setting", "opened"),
+    Input("modal-llm-setting-button", "n_clicks"),
+    Input("modal-llm-setting-close-button", "n_clicks"),
+    State("modal-llm-setting", "opened"),
     prevent_initial_call=True,
 )
 def modal_demo(_1, _2, opened):
