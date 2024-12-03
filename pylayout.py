@@ -94,7 +94,7 @@ multi_select = dmc.MultiSelect(
         )
     ],
     clearable=True,
-    searchable=True,
+    searchable=False,
     leftSectionPointerEvents="none",
     leftSection=DashIconify(icon="material-symbols:transit-ticket-outline"),
     # w=750,
