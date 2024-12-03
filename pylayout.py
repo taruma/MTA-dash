@@ -102,10 +102,10 @@ multi_select = dmc.MultiSelect(
 
 # SHOW RIDERSHIP/RECOVERY/DROP ONLY
 check_ridership = dmc.Checkbox(
-    id="check-disable-ridership", label="Hide Ridership", checked=False, size="sm"
+    id="check-disable-ridership", label="Hide Ridership Trend", checked=False, size="sm"
 )
 
-check_drop = dmc.Checkbox(id="check-disable-drop", label="Hide Drop", checked=False)
+check_drop = dmc.Checkbox(id="check-disable-drop", label="Hide Percentage Drop Trend", checked=False)
 
 # SELECT RESAMPLE PERIOD
 radio_data = [
@@ -210,7 +210,7 @@ appshell_main = dmc.AppShellMain(
         ),
         plot_mta_ridership_trends,
         dmc.Space(h="sm"),
-        dmc.Text("Additional Setting", c="dimmed", size="md", fw=500, ta="center"),
+        dmc.Text("Display Options", c="dimmed", size="md", fw=500, ta="center"),
         dmc.Space(h="sm"),
         dmc.Flex(
             [
