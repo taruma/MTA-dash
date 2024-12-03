@@ -165,6 +165,7 @@ plot1_insight = dmc.Center(
         pt="md",
         px="lg",
         id="insight-text",
+        withBorder=True,
     )
 )
 

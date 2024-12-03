@@ -134,13 +134,12 @@ def fig_to_base64(fig):
 
 def generate_insight(
     system_prompt: str,
-    context_overview: str,
+    context_project: str,
+    context_plot_stats: str,
+    user_question: str, 
     graph_base64: str,
     model: str = "openai:gpt-4o-mini",
     llm_api_key: str = None,
-    start_date: str = None,
-    end_date: str = None,
-    resample_period: str = "W",
     temperature: float = 0.75,
 ) -> str:
     """
@@ -150,16 +149,7 @@ def generate_insight(
         if llm_api_key == "" or llm_api_key is None:
             llm_api_key = os.getenv("OPENAI_API_KEY")
 
-        start_date = start_date if start_date is not None else "2020-03-01"
-        end_date = end_date if end_date is not None else "2024-10-31"
-
         client = ai.Client({"openai": dict(api_key=llm_api_key)})
-
-        period = [
-            label
-            for resample, label in TIME_FREQUENCY_LABELS
-            if resample == resample_period
-        ][0]
 
         messages = [
             {"role": "system", "content": system_prompt},
@@ -168,7 +158,7 @@ def generate_insight(
                 "content": [
                     {
                         "type": "text",
-                        "text": f"Here's overview of this project: {context_overview}",
+                        "text": context_project,
                     },
                     {
                         "type": "image_url",
@@ -176,7 +166,11 @@ def generate_insight(
                     },
                     {
                         "type": "text",
-                        "text": f"Analyze this graph and provide insights. The period data is from {start_date} to {end_date} in {period} period.",
+                        "text": context_plot_stats,
+                    },
+                    {
+                        "type": "text",
+                        "text": user_question,
                     },
                 ],
             },

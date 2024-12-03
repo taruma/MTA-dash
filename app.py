@@ -2,6 +2,7 @@
 
 import dash
 from dash import Output, Input, State, dcc, _dash_renderer
+from string import Template
 from appconfig import appconfig
 import plotly.graph_objects as go
 import dash_mantine_components as dmc
@@ -111,44 +112,90 @@ def update_figure_cards(
     Output(component_id="insight-text", component_property="children"),
     [
         Input("button-llm", "n_clicks"),
+        State("plot-mta-ridership-recovery", "figure"),
+        State("llm-context-system", "value"),
+        State("llm-context-project", "value"),
+        State("llm-context-stat", "value"),
         State("llm-question", "value"),
         State("multi-select-transportation", "value"),
         State("date-picker-start", "value"),
         State("date-picker-end", "value"),
-        State("plot-mta-ridership-recovery", "figure"),
+        State("radiogroup-resample", "value"),
         State("llm-model", "value"),
         State("llm-api-key", "value"),
-        State("radiogroup-resample", "value"),
     ],
     prevent_initial_call=True,
 )
 def update_insight(
     _,
+    fig,
+    system_prompt,
+    project_overview,
+    context_plot_stats,
     user_question,
     selected_mta,
     start_date,
     end_date,
-    fig,
+    time_frequency,
     llm_models,
     llm_api_key,
-    time_frequency,
 ):
-    system_prompt = pyfunc.read_text_file("text/system_prompt.md")
-    project_overview = pyfunc.read_text_file("text/project_overview.md")
+    """Generate insight using OpenAI's Language Model API."""
+
+    from datetime import datetime
+    import pandas as pd
+
+    template_plot_stats = Template(context_plot_stats)
+
+    # Calculation
+
+    selected_mta_label = []
+    data_ridership = []
+    data_recovery = []
+    for mode in selected_mta:
+        selected_mta_label.append(mta_data[mode]["label"])
+        data_ridership.append(
+            mta_data[mode]["data_ridership"].resample(time_frequency).sum()
+        )
+        data_recovery.append(
+            mta_data[mode]["data_recovery"].resample(time_frequency).mean()
+        )
+
+    data_ridership = pd.concat(data_ridership, axis=1)
+    data_recovery = pd.concat(data_recovery, axis=1)
+
+    selected_mta_total_ridership = data_ridership.sum()
+    selected_mta_ridership_describe = data_ridership.describe()
+    selected_mta_recovery_describe = data_recovery.describe()
+
+    selected_mta_label = ", ".join(selected_mta_label)
+    start_date = datetime.strptime(start_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    time_frequency_label = pyfunc.TIME_FREQUENCY_DICT[time_frequency]
+
+    context_plot_stats = template_plot_stats.substitute(
+        selected_mta_label=selected_mta_label,
+        start_date=start_date,
+        end_date=end_date,
+        time_frequency=time_frequency_label,
+        selected_mta_total_ridership=selected_mta_total_ridership,
+        selected_mta_ridership_describe=selected_mta_ridership_describe,
+        selected_mta_recovery_describe=selected_mta_recovery_describe,
+    )
 
     figure = pyfunc.fig_to_base64(go.Figure(fig))
 
     insight = pyfunc.generate_insight(
         system_prompt,
         project_overview,
+        context_plot_stats,
+        user_question,
         figure,
         model=llm_models,
         llm_api_key=llm_api_key,
-        start_date=start_date,
-        end_date=end_date,
-        time_frequency=time_frequency,
     )
 
+    # return dcc.Textarea("hello")
     return dcc.Markdown(insight)
 
 
@@ -161,6 +208,7 @@ def update_insight(
 )
 def modal_llm_setting(_1, _2, opened):
     return not opened
+
 
 @app.callback(
     Output("modal-llm-context", "opened"),

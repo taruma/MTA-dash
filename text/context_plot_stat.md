@@ -2,8 +2,11 @@ This is a graph showing MTA Ridership Trends for $selected_mta_label. The data c
 
 Here's a statistical information of the data:
 
-Output .describe() for MTA Ridership Trends for $selected_mta_label:
-$selected_mta_describe
+Here's a total ridership for $selected_mta_label from $start_date to $end_date:
+$selected_mta_total_ridership
 
-Top 10 Highest Recovery Rates for {selected_mta_label}:
-$top_10_highest_recovery
+Output .describe() for MTA Ridership Trends for $selected_mta_label:
+$selected_mta_ridership_describe
+
+Output .describe() for MTA Recovery Trends for $selected_mta_label:
+$selected_mta_recovery_describe
