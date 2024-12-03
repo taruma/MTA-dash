@@ -1,3 +1,5 @@
+Here's overview of this project:
+
 **Project Overview: Metropolitan Transportation Authority (MTA) Ridership Dashboard**
 
 **Data Description:**
@@ -34,7 +36,7 @@
 
 ---
 
-Note resample period abbreviations:
+Time Frequency Abbreviations:
 - "D": daily
 - "W": weekly
 - "ME": monthly

@@ -94,7 +94,7 @@ multi_select = dmc.MultiSelect(
         )
     ],
     clearable=True,
-    searchable=True,
+    searchable=False,
     leftSectionPointerEvents="none",
     leftSection=DashIconify(icon="material-symbols:transit-ticket-outline"),
     # w=750,
@@ -102,10 +102,12 @@ multi_select = dmc.MultiSelect(
 
 # SHOW RIDERSHIP/RECOVERY/DROP ONLY
 check_ridership = dmc.Checkbox(
-    id="check-disable-ridership", label="Hide Ridership", checked=False, size="sm"
+    id="check-disable-ridership", label="Hide Ridership Trend", checked=False, size="sm"
 )
 
-check_drop = dmc.Checkbox(id="check-disable-drop", label="Hide Drop", checked=False)
+check_drop = dmc.Checkbox(
+    id="check-disable-drop", label="Hide Percentage Drop Trend", checked=False
+)
 
 # SELECT RESAMPLE PERIOD
 radio_data = [
@@ -128,9 +130,6 @@ resample_period_radio = dmc.RadioGroup(
 
 # LLM
 
-plot1_llm_title = dmc.Text(
-    "Insight (with LLM)", my="md", size="md", fw=600, ta="center"
-)
 llm_model = dmc.TextInput(
     id="llm-model",
     label="LLM Model (provider:model-name)",
@@ -145,6 +144,17 @@ llm_api_key = dmc.PasswordInput(
     w=300,
 )
 
+default_question = pyfunc.read_text_file("text/default_question.md")
+
+llm_question = dmc.Textarea(
+    id="llm-question",
+    label=dmc.Text("🔍 Uncover Insights with 🤖 LLM", size="lg", fw=600),
+    value=default_question,
+    description="What do you want to know about the data?",
+    w=1200,
+    size="md",
+)
+
 placeholder_insight = pyfunc.read_text_file("text/app_plot1_insight.md")
 plot1_insight = dmc.Center(
     dmc.Paper(
@@ -155,6 +165,7 @@ plot1_insight = dmc.Center(
         pt="md",
         px="lg",
         id="insight-text",
+        withBorder=True,
     )
 )
 
@@ -164,6 +175,93 @@ loading_plot1_insight = dcc.Loading(
     type="default",
 )
 
+# LAYOUT BUTTON
+
+modal_llm_setting = dmc.Modal(
+    title=dmc.Text("LLM Settings", size="lg", fw=700),
+    id="modal-llm-setting",
+    children=[
+        dmc.Group(
+            [llm_model, llm_api_key],
+            justify="flex-start",
+            align="flex-end",
+            grow=True,
+        ),
+        dmc.Space(h=20),
+        dmc.Group(
+            [
+                dmc.Button(
+                    "Close",
+                    color="red",
+                    variant="outline",
+                    id="modal-llm-setting-close-button",
+                )
+            ],
+            justify="flex-end",
+        ),
+    ],
+    size="lg",
+    centered=True,
+)
+
+
+llm_context_system = dmc.Textarea(
+    id="llm-context-system",
+    label="System Prompt",
+    value=pyfunc.read_text_file("text/system_prompt.md"),
+    autosize=True,
+    minRows=5,
+    w=550
+)
+
+llm_context_project = dmc.Textarea(
+    id="llm-context-project",
+    label="Context: Project Overview",
+    value=pyfunc.read_text_file("text/project_overview.md"),
+    autosize=True,
+    minRows=5,
+    w=550
+)
+
+llm_context_stat = dmc.Textarea(
+    id="llm-context-stat",
+    label="Context: Statistical & Plot Description",
+    autosize=True,
+    value=pyfunc.read_text_file("text/context_plot_stat.md"),
+    minRows=5,
+    w=550
+)
+
+modal_llm_context = dmc.Modal(
+    title=dmc.Text("LLM Context", size="lg"),
+    id="modal-llm-context",
+    children=[
+        dmc.Group(
+            [
+                llm_context_system,
+                llm_context_project,
+                llm_context_stat,
+            ],
+            justify="center",
+            align="flex-start",
+            wrap=True,
+        ),
+        dmc.Space(h=20),
+        dmc.Group(
+            [
+                dmc.Button(
+                    "Close",
+                    color="red",
+                    variant="outline",
+                    id="modal-llm-context-close-button",
+                ),
+            ],
+            justify="flex-end",
+        ),
+    ],
+    fullScreen=True,
+    centered=True,
+)
 
 # FOOTER
 
@@ -210,7 +308,7 @@ appshell_main = dmc.AppShellMain(
         ),
         plot_mta_ridership_trends,
         dmc.Space(h="sm"),
-        dmc.Text("Additional Setting", c="dimmed", size="md", fw=500, ta="center"),
+        dmc.Text("Display Options", c="dimmed", size="md", fw=500, ta="center"),
         dmc.Space(h="sm"),
         dmc.Flex(
             [
@@ -222,30 +320,46 @@ appshell_main = dmc.AppShellMain(
             gap="md",
         ),
         dmc.Space(h="sm"),
-        dmc.Divider(label="At a Glance Stats", variant="dashed", labelPosition="center"),
-        # dmc.Text("At a Glance Stats", c="dimmed", size="md", fw=500, ta="center"),
+        dmc.Divider(
+            label="At a Glance Stats", variant="dashed", labelPosition="center"
+        ),
         dmc.Space(h="sm"),
         dmc.SimpleGrid(
             [
                 html.Div(id="div-cards-total-ridership"),
-                html.Div(id="div-cards-highest-recovery")
+                html.Div(id="div-cards-highest-recovery"),
             ],
             cols=2,
             spacing="md",
-            verticalSpacing="xs"
+            verticalSpacing="xs",
         ),
         dmc.Space(h="sm"),
         dmc.Divider(variant="dashed"),
+        dmc.Space(h="md"),
+        modal_llm_setting,
+        modal_llm_context,
+        dmc.Center(llm_question),
         dmc.Space(h="sm"),
-        plot1_llm_title,
         dmc.Group(
             [
-                llm_model,
-                llm_api_key,
-                dmc.Button("Generate Insight", id="button-llm", variant="gradient"),
+                dmc.ActionIcon(
+                    DashIconify(icon="clarity:settings-line", width=20),
+                    size="lg",
+                    variant="gradient",
+                    id="modal-llm-setting-button",
+                ),
+                dmc.ActionIcon(
+                    DashIconify(icon="clarity:eye-show-line", width=20),
+                    size="lg",
+                    variant="gradient",
+                    id="modal-llm-context-button",
+                ),
+                dmc.Button(
+                    "Generate Insight", id="button-llm", variant="gradient", size="sm"
+                ),
             ],
             justify="center",
-            align="flex-end",
+            align="center",
         ),
         loading_plot1_insight,
         dmc.Space(h="xl"),

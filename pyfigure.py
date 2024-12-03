@@ -9,6 +9,15 @@ from appconfig import appconfig
 from pytemplate import mytemplate
 
 
+def add_transparency(hex_color, opacity=0.5):
+    """Convert hex color to rgba with transparency"""
+    from plotly import colors
+
+    # Remove # if present
+    r, g, b = colors.hex_to_rgb(hex_color)
+    return f"rgba({r},{g},{b},{opacity})"
+
+
 def generate_watermark(subplot_number: int = 1) -> dict:
     """GENERATE DICT WATERMARK FOR SUBPLOTS"""
 
@@ -104,19 +113,19 @@ def generate_ridership_recovery(
         ridership_trace = go.Scatter(
             x=filtered_ridership.index,
             y=filtered_ridership.values,
-            name=mta_data[mode]["ridership_column"],
+            name=f"{mode.upper()} Ridership",
             legendgroup=mode,
             legendgrouptitle_text=mta_data[mode]["label"],
             line_color=colors[counter],
             line_width=3,
-            hovertemplate="%{y}",
+            hovertemplate=f"👥 <b>%{{y}}</b><extra>{mta_data[mode]["label"]}</extra>",
             visible="legendonly" if disable_ridership else True,
         )
 
         drop_trace = go.Scatter(
             x=filtered_drop.index,
             y=filtered_drop.values,
-            name=f"{mode}_drop",  # no "drop_column" in mta_data
+            name=f"{mode.upper()} % Drop",  # no "drop_column" in mta_data
             yaxis="y2",
             legendgroup=mode,
             legendgrouptitle_text=mta_data[mode]["label"],
@@ -124,13 +133,15 @@ def generate_ridership_recovery(
             line_color=colors[counter],
             line_width=3,
             visible="legendonly" if disable_drop else True,
+            hoverlabel_bgcolor=add_transparency(colors[counter], 0.3),
+            hovertemplate=f"🎯 %{{y}}<extra>{mta_data[mode]["label"]}</extra>",
         )
 
-        fig.add_trace(ridership_trace) 
+        fig.add_trace(ridership_trace)
         fig.add_trace(drop_trace)
 
     fig.update_layout(
-        xaxis=dict(title="Date"),
+        xaxis=dict(title="Date", showspikes=True),
         yaxis=dict(
             title="Estimated Ridership" if not disable_ridership else "",
             # tickformat=".3s",
@@ -159,18 +170,18 @@ def generate_ridership_recovery(
     )
 
     if is_surpass_baseline and not disable_drop:
-            fig.add_hline(
-                y=0, line_dash="dash", line_color=colors[0], line_width=2, yref="y2"
-            )
-            fig.add_annotation(
-                text="<i><b>Surpassing 2019 Levels</b></i>",
-                showarrow=False,
-                x=1,
-                xref="x domain",
-                xanchor="right",
-                y=0,
-                yref="y2",
-                yanchor="top",
-            )
+        fig.add_hline(
+            y=0, line_dash="dash", line_color=colors[0], line_width=2, yref="y2"
+        )
+        fig.add_annotation(
+            text="<i><b>Surpassing 2019 Levels</b></i>",
+            showarrow=False,
+            x=1,
+            xref="x domain",
+            xanchor="right",
+            y=0,
+            yref="y2",
+            yanchor="top",
+        )
 
     return fig
