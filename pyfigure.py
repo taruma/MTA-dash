@@ -113,19 +113,19 @@ def generate_ridership_recovery(
         ridership_trace = go.Scatter(
             x=filtered_ridership.index,
             y=filtered_ridership.values,
-            name=mta_data[mode]["ridership_column"],
+            name=f"{mode.upper()} Ridership",
             legendgroup=mode,
             legendgrouptitle_text=mta_data[mode]["label"],
             line_color=colors[counter],
             line_width=3,
-            hovertemplate="%{y}",
+            hovertemplate=f"👥 <b>%{{y}}</b><extra>{mta_data[mode]["label"]}</extra>",
             visible="legendonly" if disable_ridership else True,
         )
 
         drop_trace = go.Scatter(
             x=filtered_drop.index,
             y=filtered_drop.values,
-            name=f"{mode}_drop",  # no "drop_column" in mta_data
+            name=f"{mode.upper()} % Drop",  # no "drop_column" in mta_data
             yaxis="y2",
             legendgroup=mode,
             legendgrouptitle_text=mta_data[mode]["label"],
@@ -134,6 +134,7 @@ def generate_ridership_recovery(
             line_width=3,
             visible="legendonly" if disable_drop else True,
             hoverlabel_bgcolor=add_transparency(colors[counter], 0.3),
+            hovertemplate=f"🎯 %{{y}}<extra>{mta_data[mode]["label"]}</extra>",
         )
 
         fig.add_trace(ridership_trace)
