@@ -93,7 +93,7 @@ def update_figure_cards(
         start_end,
         selected_time_frequency,
         disable_ridership,
-        disable_drop
+        disable_drop,
     )
 
     ridership_cards = pylayoutfunc.generate_layout_card_total_ridership(
@@ -111,32 +111,42 @@ def update_figure_cards(
     Output(component_id="insight-text", component_property="children"),
     [
         Input("button-llm", "n_clicks"),
+        State("llm-question", "value"),
+        State("multi-select-transportation", "value"),
+        State("date-picker-start", "value"),
+        State("date-picker-end", "value"),
         State("plot-mta-ridership-recovery", "figure"),
         State("llm-model", "value"),
         State("llm-api-key", "value"),
-        State("date-picker-start", "value"),
-        State("date-picker-end", "value"),
         State("radiogroup-resample", "value"),
     ],
     prevent_initial_call=True,
 )
 def update_insight(
-    _, fig, llm_models, llm_api_key, start_date, end_date, resample_period
+    _,
+    user_question,
+    selected_mta,
+    start_date,
+    end_date,
+    fig,
+    llm_models,
+    llm_api_key,
+    time_frequency,
 ):
     system_prompt = pyfunc.read_text_file("text/system_prompt.md")
-    context_overview = pyfunc.read_text_file("text/context_overview.md")
+    project_overview = pyfunc.read_text_file("text/project_overview.md")
 
     figure = pyfunc.fig_to_base64(go.Figure(fig))
 
     insight = pyfunc.generate_insight(
         system_prompt,
-        context_overview,
+        project_overview,
         figure,
         model=llm_models,
         llm_api_key=llm_api_key,
         start_date=start_date,
         end_date=end_date,
-        time_frequency=resample_period,
+        time_frequency=time_frequency,
     )
 
     return dcc.Markdown(insight)
@@ -149,7 +159,17 @@ def update_insight(
     State("modal-llm-setting", "opened"),
     prevent_initial_call=True,
 )
-def modal_demo(_1, _2, opened):
+def modal_llm_setting(_1, _2, opened):
+    return not opened
+
+@app.callback(
+    Output("modal-llm-context", "opened"),
+    Input("modal-llm-context-button", "n_clicks"),
+    Input("modal-llm-context-close-button", "n_clicks"),
+    State("modal-llm-context", "opened"),
+    prevent_initial_call=True,
+)
+def modal_llm_context(_1, _2, opened):
     return not opened
 
 

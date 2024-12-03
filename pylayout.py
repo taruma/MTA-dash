@@ -176,40 +176,92 @@ loading_plot1_insight = dcc.Loading(
 
 # LAYOUT BUTTON
 
-modal_llm_setting = html.Div(
-    [
-        dmc.Modal(
-            title=dmc.Text("LLM Settings", c="dimmed", size="lg", ta="center"),
-            id="modal-llm-setting",
-            children=[
-                dmc.Group(
-                    [
-                        # button_llm,
-                        llm_model,
-                        llm_api_key,
-                    ],
-                    justify="flex-start",
-                    align="flex-end",
-                    grow=True,
-                ),
-                dmc.Space(h=20),
-                dmc.Group(
-                    [
-                        dmc.Button(
-                            "Close",
-                            color="red",
-                            variant="outline",
-                            id="modal-llm-setting-close-button",
-                        ),
-                    ],
-                    justify="flex-end",
+modal_llm_setting = dmc.Modal(
+    title=dmc.Text("LLM Settings", size="lg", fw=700),
+    id="modal-llm-setting",
+    children=[
+        dmc.Group(
+            [llm_model, llm_api_key],
+            justify="flex-start",
+            align="flex-end",
+            grow=True,
+        ),
+        dmc.Space(h=20),
+        dmc.Group(
+            [
+                dmc.Button(
+                    "Close",
+                    color="red",
+                    variant="outline",
+                    id="modal-llm-setting-close-button",
+                )
+            ],
+            justify="flex-end",
+        ),
+    ],
+    size="lg",
+    centered=True,
+)
+
+
+llm_context_system = dmc.Textarea(
+    id="llm-context-system",
+    label="System Prompt",
+    value=pyfunc.read_text_file("text/system_prompt.md"),
+    autosize=True,
+    minRows=5,
+    w=550
+)
+
+llm_context_project = dmc.Textarea(
+    id="llm-context-project",
+    label="Context: Project Overview",
+    value=pyfunc.read_text_file("text/project_overview.md"),
+    autosize=True,
+    minRows=5,
+    w=550
+)
+
+llm_context_stat = dmc.Textarea(
+    id="llm-context-stat",
+    label="Context: Statistical & Plot Description",
+    autosize=True,
+    value=pyfunc.read_text_file("text/context_plot_stat.md"),
+    minRows=5,
+    w=550
+)
+
+modal_llm_context = dmc.Modal(
+    title=dmc.Text("LLM Context", size="lg"),
+    id="modal-llm-context",
+    children=[
+        dmc.Group(
+            [
+                llm_context_system,
+                llm_context_project,
+                llm_context_stat,
+            ],
+            justify="center",
+            align="flex-start",
+            wrap=True,
+        ),
+        dmc.Space(h=20),
+        dmc.Group(
+            [
+                dmc.Button(
+                    "Close",
+                    color="red",
+                    variant="outline",
+                    id="modal-llm-context-close-button",
                 ),
             ],
-            size="lg",
-            centered=True,
+            justify="flex-end",
         ),
-    ]
+    ],
+    fullScreen=True,
+    centered=True,
 )
+
 # FOOTER
 
 note_footer = dmc.Center(
@@ -284,6 +336,7 @@ appshell_main = dmc.AppShellMain(
         dmc.Divider(variant="dashed"),
         dmc.Space(h="md"),
         modal_llm_setting,
+        modal_llm_context,
         dmc.Center(llm_question),
         dmc.Space(h="sm"),
         dmc.Group(
@@ -298,7 +351,7 @@ appshell_main = dmc.AppShellMain(
                     DashIconify(icon="clarity:eye-show-line", width=20),
                     size="lg",
                     variant="gradient",
-                    id="modal-prompt-button",
+                    id="modal-llm-context-button",
                 ),
                 dmc.Button(
                     "Generate Insight", id="button-llm", variant="gradient", size="sm"

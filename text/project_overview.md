@@ -34,7 +34,7 @@
 
 ---
 
-Note resample period abbreviations:
+Time Frequency Abbreviations:
 - "D": daily
 - "W": weekly
 - "ME": monthly
